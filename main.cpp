@@ -1,8 +1,6 @@
 /*
-  GLORIOUS MKDS ARM9 MUSIC TABLE EDITOR 1.0!!! 
-  MADE BY ERMELBER AND FIXED BY YAMI AND MKDASHER!!!
-  Yeah, I know this may suck and not work properly, but well, it's my first tool :3
-  Can be optimized.
+  Roco's default kart editor. Based on Ermelber's, MKDasher's and Yami's
+  MKDS ARM9 Music Table Editor 1.0
 */
 
 
@@ -39,67 +37,27 @@ int min(int a, int b){
 }
 
 int main() {
-    const int offset = 1388909;
+    const int offset = 1389172;
     int selected;
     int newvalue;
     char choice;
-    string tracks[53];
+    string chars[13];
     int a[211];
-    tracks[0] = "Unknown";
-    tracks[1] = "Course Intro 2";
-    tracks[2] = "Course Intro 1";
-    tracks[3] = "Course Intro 3";
-    tracks[4] = "Course Intro 1";
-    tracks[5] = "Battle Mode Intro";
-    tracks[6] = "Boss Intro";
-    tracks[7] = "Figure-8 Circuit";
-    tracks[8] = "GCN Luigi Circuit";
-    tracks[9] = "GCN Yoshi Circuit";
-    tracks[10] = "Cheep Cheep Beach";
-    tracks[11] = "Yoshi Falls";
-    tracks[12] = "GCN Baby Park";
-    tracks[13] = "N64 Moo Moo Farm";
-    tracks[14] = "N64 Frappe Snowland";
-    tracks[15] = "Delfino Sqare";
-    tracks[16] = "Airship Fortress";
-    tracks[17] = "Wario Stadium";
-    tracks[18] = "GCN Mushroom Bridge";
-    tracks[19] = "Peach Gardens";
-    tracks[20] = "Luigi's Mansion";
-    tracks[21] = "SNES Mario Circuit 1";
-    tracks[22] = "SNES Koopa Beach 2";
-    tracks[23] = "SNES Donut Plains 1";
-    tracks[24] = "SNES Choco Island 2";
-    tracks[25] = "GBA Peach Circuit";
-    tracks[26] = "GBA Luigi Circuit";
-    tracks[27] = "Shroom Ridge";
-    tracks[28] = "N64 Choco Mountain";
-    tracks[29] = "N64 Banshee Boardwalk";
-    tracks[30] = "DK Pass";
-    tracks[31] = "Desert Hills";
-    tracks[32] = "Waluigi Pinball";
-    tracks[33] = "Tick-Tock Clock";
-    tracks[34] = "Mario Circuit";
-    tracks[35] = "Rainbow Road";
-    tracks[36] = "GBA Bowser Castle 2";
-    tracks[37] = "Bowser Castle";
-    tracks[38] = "GBA Sky Garden";
-    tracks[39] = "Battle Stage Theme";
-    tracks[40] = "Boss Battle Theme";
-    tracks[41] = "Jingle";
-    tracks[42] = "GP Results";
-    tracks[43] = "Credits";
-    tracks[44] = "Credits True";
-    tracks[45] = "Wi-Fi Menu";
-    tracks[46] = "Multiplayer Menu";
-    tracks[47] = "Records Menu";
-    tracks[48] = "Options Menu";
-    tracks[49] = "Intro";
-    tracks[50] = "Singleplayer Menu";
-    tracks[51] = "Unknown";
-    tracks[52] = "Mario Circuit";
+    chars[0] = "Mario";
+    chars[1] = "DK";
+    chars[2] = "Toad";
+    chars[3] = "Bowser";
+    chars[4] = "Peach";
+    chars[5] = "Wario";
+    chars[6] = "Yoshi";
+    chars[7] = "Luigi";
+    chars[8] = "Dry Bones";
+    chars[9] = "Daisy";
+    chars[10] = "Waluigi";
+    chars[11] = "ROB";
+    chars[12] = "Shy Guy";
     //Start
-    printf("Mario Kart DS ARM9 Music Table Editor by Ermelber\n\nPress any key to start the program.\n");
+    printf("Roco's default kart editor\n\nSpecial thanks to Ermelber, Yami and MKDasher, without them this wouldn't be possible\nPress enter to continue\n\n");
     cin.ignore();    
     //Get arm9.bin
     string text = get_file_contents("arm9.bin");
@@ -108,26 +66,27 @@ int main() {
     do
     {
         //Print Tracks       
-        for (int i = 0; i < 53; i++){
-            cout << i << ") "<< tracks[i] <<" [" << a[i*4] <<"]" << endl;
+        for (int i = 0; i < 13; i++){
+            cout << i << ") "<< chars[i] <<" [" << a[i*4] <<"]" << endl;
         }
         //Select slot
         do{
-            printf("\n\nSelect a slot to change [0..52]: ");
+            printf("\n\nSelect a character to change [0..12]: ");
             scanf("%d",&selected);        
-        }while (selected <0 || selected>52); 
+        }while (selected <0 || selected>12); 
     
         //Confirm
         while (true) {
-            cout << "\nDo you want to change Slot " << selected << "'s (" << tracks[selected] << ") SEQ value? [Y/N] ";
+            cout << "\nDo you want to change " << chars[selected] << " default kart? [Y/N] ";
             cin >> choice;
         //Choices
             if ((choice == 'Y') || (choice == 'y')) {
                 do{
                     //New value
-                    cout << "\nInsert the new SEQ value (Old value was " << a[selected*4] << ") [-1..75]=";
+                    printf("If you want to know what kart id you should put, please visit: https://bit.ly/3fHDHNi\nNote:Kart ID 36 will crash the game.\n");
+                    cout << "\nInsert the new kart id (Old value was " << a[selected*4] << ") [0..36]=";
                     scanf("%d",&newvalue);
-                }while (newvalue <-1 || newvalue>75);
+                }while (newvalue <0 || newvalue>36);
                 a[selected*4]=newvalue;
                 break;
             }
