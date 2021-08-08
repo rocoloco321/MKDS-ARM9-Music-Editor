@@ -1,3 +1,20 @@
+Roco's Default Kart editor
+
+Edits the default kart in MKDS.
+
+Based on Ermelber's MKDS ARM9 Music Editor.
+
+Instructions
+1. Put your (preferably decompressed) arm9.bin in the same location as the program. It must exactly be named arm9.bin
+2. Open the program, it will guide you trough the editing
+3. Enjoy
+
+Special thanks to Ermelber, Yami and MKDasher, without them this wouldn't be possible!
+
+======================
+Original Readme
+======================
+
 MKDS ARM9 Music Editor
 ======================
 
