@@ -10,6 +10,8 @@ Instructions
 2. Open the program, it will guide you trough the editing
 3. Enjoy
 
+Note:I don't know if this work with an arm9 that isn't from the European verison of MKDS
+
 Special thanks to Ermelber, Yami and MKDasher, without them this wouldn't be possible!
 
 Original Readme
