@@ -1,4 +1,5 @@
 Roco's Default Kart editor
+======================
 
 Edits the default kart in MKDS.
 
@@ -11,7 +12,6 @@ Instructions
 
 Special thanks to Ermelber, Yami and MKDasher, without them this wouldn't be possible!
 
-======================
 Original Readme
 ======================
 
