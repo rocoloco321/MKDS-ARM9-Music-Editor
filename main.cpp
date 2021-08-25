@@ -37,12 +37,17 @@ int min(int a, int b){
 }
 
 int main() {
-    const int offset = 1389172;
+    const int defoffset = 1389172;
+    const int ordoffset = 1389420;
+    int table;
+    int next = 0;
+    int offset;
     int selected;
     int newvalue;
     char choice;
     string chars[13];
     int a[211];
+    //character names
     chars[0] = "Mario";
     chars[1] = "DK";
     chars[2] = "Toad";
@@ -56,16 +61,36 @@ int main() {
     chars[10] = "Waluigi";
     chars[11] = "ROB";
     chars[12] = "Shy Guy";
+    
     //Start
-    printf("Roco's default kart editor\n\nSpecial thanks to Ermelber, Yami and MKDasher, without them this wouldn't be possible\nPress enter to continue\n\n");
-    cin.ignore();    
+    printf("Roco's default kart editor\n\nSpecial thanks to Ermelber, Yami, MKDasher and Szymbar without them this wouldn't be possible\nPress enter to continue\n\n");
+    cin.ignore();   
+    //ask which table to edit
+	while (next == 0)
+	{
+		printf("What table do you want to edit?\n1=Default kart\n2=Kart order in menu\n");
+		scanf("%d",&table);
+		switch (table){
+			case 1:
+				offset = defoffset;
+				next = 1;
+				break;
+			case 2:
+				offset = ordoffset;
+				next = 1;
+				break;
+			default:
+				printf("invalid option. Please try again\n");
+		}
+	 } 
     //Get arm9.bin
     string text = get_file_contents("arm9.bin");
     for (int i = offset; i < min(text.size(), offset + 211); i++)
-        a[i-offset] = (int) text[i];       
+        a[i-offset] = (int) text[i];
+	if (table == 1){       
     do
     {
-        //Print Tracks       
+        //Print chars       
         for (int i = 0; i < 13; i++){
             cout << i << ") "<< chars[i] <<" [" << a[i*4] <<"]" << endl;
         }
@@ -83,7 +108,7 @@ int main() {
             if ((choice == 'Y') || (choice == 'y')) {
                 do{
                     //New value
-                    printf("If you want to know what kart id you should put, please visit: https://bit.ly/3fHDHNi\nNote:Kart ID 36 will crash the game.\n");
+                    printf("If you want to know what kart id you should enter here, please visit: https://bit.ly/3fHDHNi\nNote:Kart ID 36 will crash the game.\n");
                     cout << "\nInsert the new kart id (Old value was " << a[selected*4] << ") [0..36]=";
                     scanf("%d",&newvalue);
                 }while (newvalue <0 || newvalue>36);
@@ -115,6 +140,60 @@ int main() {
         }
     }
     while (choice == 'Y' || choice == 'y'); 
+}else{
+	do
+    {
+        //Print each entry      
+        for (int i = 0; i < 36; i++){
+            cout << "entry " << i <<": [" << a[i*4] <<"]" << endl;
+        }
+        //Select slot
+        do{
+            printf("\n\nSelect an entry to change [0..35]: ");
+            scanf("%d",&selected);        
+        }while (selected <0 || selected>35); 
+    
+        //Confirm
+        while (true) {
+            cout << "\nDo you want to change entry number " << selected << " ? [Y/N] ";
+            cin >> choice;
+        //Choices
+            if ((choice == 'Y') || (choice == 'y')) {
+                do{
+                    //New value
+                    printf("If you want to know what kart id you should enter here, please visit: https://bit.ly/3fHDHNi\nNote:Kart ID 36 will crash the game.\n");
+                    cout << "\nInsert the new kart id (Old value was " << a[selected*4] << ") [0..36]=";
+                    scanf("%d",&newvalue);
+                }while (newvalue <0 || newvalue>36);
+                a[selected*4]=newvalue;
+                break;
+            }
+            else if ((choice == 'N') || (choice == 'n')) {
+                break;
+            }
+            else {
+                cout << "\nThe Choice isn't valid.";
+            }
+        }
+    
+        
+        while (true) {
+            cout << "\nDo you want to edit it furthermore? [Y/N] ";
+            cin >> choice;
+
+            if ((choice == 'Y') || (choice == 'y')) {
+                break;
+            }
+            else if ((choice == 'N') || (choice == 'n')) {
+                break;
+            }
+            else {
+                cout << "\nThe Choice isn't valid.";
+            }
+        }
+    }
+    while (choice == 'Y' || choice == 'y'); 
+}
     
     /*//Prints array (Testing purposes)
     for (int i=0; i<211; i++)
