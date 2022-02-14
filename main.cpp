@@ -39,6 +39,8 @@ int min(int a, int b){
 int main() {
     const int defoffset = 1389172;
     const int ordoffset = 1389420;
+    const int rainoff = 535424;
+    const int snowoff = 535416;
     int table;
     int next = 0;
     int offset;
@@ -68,7 +70,7 @@ int main() {
     //ask which table to edit
 	while (next == 0)
 	{
-		printf("What table do you want to edit?\n1=Default kart\n2=Kart order in menu\n");
+		printf("What table do you want to edit?\n1=Default kart\n2=Kart order in menu\n3= Rain Slot\n4= Snow Slot");
 		scanf("%d",&table);
 		switch (table){
 			case 1:
@@ -77,6 +79,14 @@ int main() {
 				break;
 			case 2:
 				offset = ordoffset;
+				next = 1;
+				break;
+            case 3:
+				offset = rainoff;
+				next = 1;
+				break;
+            case 4:
+				offset = snowoff;
 				next = 1;
 				break;
 			default:
@@ -122,6 +132,40 @@ int main() {
                 cout << "\nThe Choice isn't valid.";
             }
         }
+    
+        
+        while (true) {
+            cout << "\nDo you want to edit it furthermore? [Y/N] ";
+            cin >> choice;
+
+            if ((choice == 'Y') || (choice == 'y')) {
+                break;
+            }
+            else if ((choice == 'N') || (choice == 'n')) {
+                break;
+            }
+            else {
+                cout << "\nThe Choice isn't valid.";
+            }
+        }
+    }
+    while (choice == 'Y' || choice == 'y'); 
+}else if(table == 3 || table == 4){
+	do
+    {
+        //Print each entry      
+        
+    selected = 0;
+        //Confirm
+                do{
+                    //New value
+                    printf("Enter the course ID for this weather's slot\n");
+                    cout << "\nInsert the new course id (Old value was " << a[selected*4] << ") [1..54]=";
+                    scanf("%d",&newvalue);
+                }while (newvalue <1 || newvalue>54);
+                a[selected*4]=newvalue;
+            
+
     
         
         while (true) {
