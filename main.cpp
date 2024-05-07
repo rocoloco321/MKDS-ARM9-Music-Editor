@@ -13,6 +13,29 @@
 #include <cerrno>
 #include <cstdlib>
 #include <ctype.h>
+#include <stdint.h>
+typedef int32_t		s32;
+typedef s32 fx32;
+#define FX32_SHIFT          12
+#define FX32_INT_SIZE       19
+#define FX32_DEC_SIZE       12
+
+#define FX32_INT_MASK       0x7ffff000
+#define FX32_DEC_MASK       0x00000fff
+#define FX32_SIGN_MASK      0x80000000
+
+#define FX32_MAX            ((fx32)0x7fffffff)
+#define FX32_MIN            ((fx32)0x80000000)
+
+#define FX_MUL(v1, v2)       ((fx32)(((fx64)(v1) * (v2) + 0x800LL) >> FX32_SHIFT))
+#define FX_MUL32x64C(v1, v2) ((fx32)(((v2) * (v1) + 0x80000000LL) >> 32))
+
+#define FX_FX32_TO_F32(x)    ((f32)((x) / (f32)(1 << FX32_SHIFT)))
+#define FX_F32_TO_FX32(x)    ((fx32)(((x) > 0) ? \
+                                     ((x) * (1 << FX32_SHIFT) + 0.5f ) : \
+                                     ((x) * (1 << FX32_SHIFT) - 0.5f )))
+
+#define FX32_CONST(x)        FX_F32_TO_FX32(x)
 
 using namespace std;
 
@@ -37,10 +60,11 @@ int min(int a, int b){
 }
 
 int main() {
-    const int defoffset = 1389172;
+    const int defoffset = 0x153274;
     const int ordoffset = 1389420;
     const int rainoff = 535424;
     const int snowoff = 535416;
+    const int balloonYoff = 0x156600;
     int table;
     int next = 0;
     int offset;
@@ -49,6 +73,7 @@ int main() {
     char choice;
     string chars[13];
     int a[211];
+    fx32 *ballonY[13];
     //character names
     chars[0] = "Mario";
     chars[1] = "DK";
@@ -70,7 +95,7 @@ int main() {
     //ask which table to edit
 	while (next == 0)
 	{
-		printf("What table do you want to edit?\n1=Default kart\n2=Kart order in menu\n3= Rain Slot\n4= Snow Slot");
+		printf("What table do you want to edit?\n1=Default kart\n2=Kart order in menu\n3= Rain Slot\n4= Snow Slot\n5 = Balloon Y offset\n:");
 		scanf("%d",&table);
 		switch (table){
 			case 1:
@@ -87,6 +112,10 @@ int main() {
 				break;
             case 4:
 				offset = snowoff;
+				next = 1;
+				break;
+			case 5:
+				offset = balloonYoff;
 				next = 1;
 				break;
 			default:
@@ -166,6 +195,61 @@ int main() {
                 a[selected*4]=newvalue;
             
 
+    
+        
+        while (true) {
+            cout << "\nDo you want to edit it furthermore? [Y/N] ";
+            cin >> choice;
+
+            if ((choice == 'Y') || (choice == 'y')) {
+                break;
+            }
+            else if ((choice == 'N') || (choice == 'n')) {
+                break;
+            }
+            else {
+                cout << "\nThe Choice isn't valid.";
+            }
+        }
+    }
+    while (choice == 'Y' || choice == 'y'); 
+}else if (table == 5){       
+	for (int i = offset; i < min(text.size(), offset + 211); i+=4)
+        a[i-offset] = (s32) text[i];
+    do
+    {
+        //Print chars       
+        for (int i = 0; i < 13; i++){
+            cout << i << ") "<< chars[i] <<" [" << a[i*4] <<"]" << endl;
+        }
+        //Select slot
+        do{
+            printf("\n\nSelect a character to change [0..12]: ");
+            scanf("%d",&selected);        
+        }while (selected <0 || selected>12); 
+    
+        //Confirm
+        while (true) {
+            cout << "\nDo you want to change " << chars[selected] << " default kart? [Y/N] ";
+            cin >> choice;
+        //Choices
+            if ((choice == 'Y') || (choice == 'y')) {
+                do{
+                    //New value
+                    printf("If you want to know what kart id you should enter here, please visit: https://bit.ly/3fHDHNi\nNote:Kart ID 36 will crash the game.\n");
+                    cout << "\nInsert the new kart id (Old value was " << a[selected*4] << ") [0..36]=";
+                    scanf("%d",&newvalue);
+                }while (newvalue <0 || newvalue>36);
+                a[selected*4]=newvalue;
+                break;
+            }
+            else if ((choice == 'N') || (choice == 'n')) {
+                break;
+            }
+            else {
+                cout << "\nThe Choice isn't valid.";
+            }
+        }
     
         
         while (true) {
